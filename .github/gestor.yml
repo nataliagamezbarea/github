@@ -1,0 +1,26 @@
+name: Gestor de Repos
+
+on:
+  workflow_dispatch: # Permite ejecutarlo manualmente desde GitHub
+
+jobs:
+  ejecutar_script:
+    runs-on: ubuntu-latest
+    steps:
+      # Clonar el repositorio
+      - name: Clonar repo
+        uses: actions/checkout@v3
+
+      # Inyectar Secrets como variables de entorno
+      - name: Configurar variables de entorno
+        run: |
+          echo "TOKEN=${{ secrets.GH_TOKEN }}" >> $GITHUB_ENV
+          echo "USER=${{ secrets.GH_USER }}" >> $GITHUB_ENV
+
+      # Instalar dependencias de Python
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      # Ejecutar tu script
+      - name: Ejecutar script
+        run: python python.py
